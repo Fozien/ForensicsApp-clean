@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Отображение фото -->
+    <ImageView
+        android:id="@+id/imageViewCaptured"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="Captured Image" />
+
+    <!-- Подсказка -->
+    <TextView
+        android:id="@+id/textViewHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Введите обстоятельства произошедшего"
+        android:textSize="18sp"
+        android:layout_marginTop="16dp" />
+
+    <!-- Поле ввода описания -->
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Опишите произошедшее"
+        android:inputType="textMultiLine"
+        android:minHeight="100dp"
+        android:gravity="top"
+        android:background="@android:drawable/editbox_background"/>
+
+    <!-- Кнопка отправки на обработку -->
+    <Button
+        android:id="@+id/buttonProcess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Отправить на обработку"
+        android:layout_marginTop="16dp" />
+
+    <!-- Поле для вывода обработанного текста -->
+    <TextView
+        android:id="@+id/textViewProcessed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Здесь появится обработанный текст"
+        android:textSize="16sp"
+        android:padding="8dp"
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        android:minHeight="100dp"
+        android:gravity="top"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

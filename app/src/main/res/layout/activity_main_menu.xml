@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="@color/purple_200"
+    tools:context=".MainMenuActivity">
+
+    <!-- Заголовок приложения -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ForensicsApp"
+        android:textSize="32sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginBottom="48dp"/>
+
+    <!-- Кнопка для камеры -->
+    <Button
+        android:id="@+id/btn_camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Криминалистическая съемка"
+        android:textSize="18sp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="@color/purple_500"
+        android:textColor="@color/white"
+        android:padding="16dp"/>
+
+    <!-- Кнопка для GPT-ассистента -->
+    <Button
+        android:id="@+id/btn_gpt_assistant"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Формализация описаний"
+        android:textSize="18sp"
+        android:backgroundTint="@color/purple_700"
+        android:textColor="@color/white"
+        android:padding="16dp"/>
+
+</LinearLayout>
