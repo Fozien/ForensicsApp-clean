@@ -5,19 +5,22 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
-// Загрузка свойств из local.properties
 val localProperties = Properties()
 val localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
     localProperties.load(localPropertiesFile.inputStream())
 }
 
+// Читаем с fallback чтобы не крашить сборку если ключа нет
+val yandexFolderId = localProperties["YANDEX_FOLDER_ID"]?.toString() ?: ""
+val yandexApiKey   = localProperties["YANDEX_API_KEY"]?.toString()   ?: ""
+
 android {
-    namespace = "com.example.forensicsapp"
+    namespace = "com.example.fixator"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.forensicsapp"
+        applicationId = "com.example.fixator"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
@@ -28,8 +31,8 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "YANDEX_FOLDER_ID", "\"${localProperties.getProperty("yandex.folder.id") ?: ""}\"")
-            buildConfigField("String", "YANDEX_IAM_TOKEN", "\"${localProperties.getProperty("yandex.iam.token") ?: ""}\"")
+            buildConfigField("String", "YANDEX_FOLDER_ID", "\"$yandexFolderId\"")
+            buildConfigField("String", "YANDEX_API_KEY",   "\"$yandexApiKey\"")
         }
         release {
             isMinifyEnabled = false
@@ -37,10 +40,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "YANDEX_FOLDER_ID", "\"${localProperties.getProperty("yandex.folder.id") ?: ""}\"")
-            buildConfigField("String", "YANDEX_IAM_TOKEN", "\"${localProperties.getProperty("yandex.iam.token") ?: ""}\"")
+            buildConfigField("String", "YANDEX_FOLDER_ID", "\"$yandexFolderId\"")
+            buildConfigField("String", "YANDEX_API_KEY",   "\"$yandexApiKey\"")
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -55,7 +59,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

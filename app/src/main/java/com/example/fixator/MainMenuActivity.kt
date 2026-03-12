@@ -1,11 +1,11 @@
-package com.example.forensicsapp
+package com.example.fixator
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.example.forensicsapp.cvcamera.MainActivity
-import com.example.forensicsapp.yandexgpt.YandexGPTActivity
+import com.example.fixator.cvcamera.MainActivity
+import com.example.fixator.yandexgpt.YandexGPTActivity
 
 class MainMenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

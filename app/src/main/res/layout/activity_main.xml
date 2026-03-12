@@ -12,7 +12,7 @@
         android:layout_height="match_parent" />
 
     <!-- Оверлей для рисования ориентиров -->
-    <com.example.forensicsapp.cvcamera.OverlayView
+    <com.example.fixator.cvcamera.OverlayView
         android:id="@+id/overlayView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

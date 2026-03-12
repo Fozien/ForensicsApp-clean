@@ -1,4 +1,4 @@
-package com.example.forensicsapp
+package com.example.fixator
 
 import org.junit.Test
 
