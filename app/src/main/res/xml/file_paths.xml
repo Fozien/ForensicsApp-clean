@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-files-path
+        name="forensics_reports"
+        path="ForensicsReports/" />
+    <external-files-path
+        name="forensics_photos"
+        path="ForensicsApp/" />
+</paths>

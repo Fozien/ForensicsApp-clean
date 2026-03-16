@@ -1,10 +1,14 @@
 package com.example.fixator.yandexgpt
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import android.content.ActivityNotFoundException
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import com.example.fixator.BuildConfig
 import com.example.fixator.databinding.ActivityYandexgptBinding
@@ -17,8 +21,6 @@ class YandexGPTActivity : AppCompatActivity() {
     private lateinit var binding: ActivityYandexgptBinding
     private lateinit var viewModel: YandexGPTViewModel
 
-    // Храним в ViewModel через SavedStateHandle было бы идеально,
-    // но для простоты — onSaveInstanceState достаточно
     private var formalTextResult: String? = null
     private var photoPath: String? = null
 
@@ -31,7 +33,6 @@ class YandexGPTActivity : AppCompatActivity() {
         binding = ActivityYandexgptBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Восстанавливаем результат после поворота экрана
         savedInstanceState?.getString(KEY_FORMAL_TEXT)?.let { saved ->
             formalTextResult = saved
             binding.tvResult.text = saved
@@ -60,7 +61,7 @@ class YandexGPTActivity : AppCompatActivity() {
             }
 
             val folderId = BuildConfig.YANDEX_FOLDER_ID
-            val apiKey = BuildConfig.YANDEX_API_KEY  // Переименовано с YANDEX_IAM_TOKEN
+            val apiKey = BuildConfig.YANDEX_API_KEY
 
             if (folderId.isEmpty() || apiKey.isEmpty()) {
                 Toast.makeText(this, "API-ключи не настроены в BuildConfig", Toast.LENGTH_LONG).show()
@@ -72,9 +73,7 @@ class YandexGPTActivity : AppCompatActivity() {
             viewModel.getFormalText(folderId, apiKey, text) { result, isError ->
                 runOnUiThread {
                     setLoadingState(false)
-
                     if (isError) {
-                        // Ошибки показываем отдельно, не затираем предыдущий успешный результат
                         Toast.makeText(this, result, Toast.LENGTH_LONG).show()
                     } else {
                         binding.tvResult.text = result
@@ -89,11 +88,7 @@ class YandexGPTActivity : AppCompatActivity() {
 
             when {
                 formalText.isNullOrEmpty() -> {
-                    Toast.makeText(
-                        this,
-                        "Сначала получите формализованный текст",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this, "Сначала получите формализованный текст", Toast.LENGTH_SHORT).show()
                 }
                 photoPath.isNullOrEmpty() -> {
                     Toast.makeText(this, "Отсутствует путь к фотографии", Toast.LENGTH_SHORT).show()
@@ -106,32 +101,33 @@ class YandexGPTActivity : AppCompatActivity() {
                     }
 
                     try {
-                        val reportFile = ReportGenerator.generateReport(this, photoFile, formalText)
-                        Toast.makeText(
-                            this,
-                            "Отчёт сохранён:\n${reportFile.absolutePath}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        val reportUri = ReportGenerator.generateReport(this, photoFile, formalText)
+                        openPdf(reportUri)
+                        Toast.makeText(this, "Отчёт сохранён в Загрузки/Fixator", Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {
-                        Toast.makeText(
-                            this,
-                            "Ошибка генерации отчёта: ${e.localizedMessage}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this, "Ошибка генерации отчёта: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
                     }
                 }
             }
         }
     }
 
-    /** Блокирует кнопку и показывает индикатор загрузки во время запроса */
-    private fun setLoadingState(isLoading: Boolean) {
-        binding.btnSubmit.isEnabled = !isLoading
-        //binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-        // Если в layout нет progressBar — удали эту строку
+    private fun openPdf(uri: Uri) {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(uri, "application/pdf")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, "Установите приложение для просмотра PDF", Toast.LENGTH_LONG).show()
+        }
     }
 
-    /** Сохраняем результат при повороте экрана */
+    private fun setLoadingState(isLoading: Boolean) {
+        binding.btnSubmit.isEnabled = !isLoading
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         formalTextResult?.let { outState.putString(KEY_FORMAL_TEXT, it) }

@@ -3,40 +3,84 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#0F1923">
 
-    <!-- Preview камеры -->
+    <!-- Preview камеры — на весь экран -->
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Оверлей для рисования ориентиров -->
+    <!-- Оверлей рамки лица -->
     <com.example.fixator.cvcamera.OverlayView
         android:id="@+id/overlayView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!-- Текстовые подсказки -->
-    <TextView
-        android:id="@+id/textViewHint"
-        android:layout_width="wrap_content"
+    <!-- Верхняя полоса с заголовком и подсказкой -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_marginTop="32dp"
-        android:background="#80000000"
-        android:padding="16dp"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        tools:text="Подойдите ближе" />
+        android:layout_gravity="top"
+        android:background="#CC000000"
+        android:orientation="vertical"
+        android:paddingTop="36dp"
+        android:paddingBottom="12dp"
+        android:paddingHorizontal="16dp">
 
-    <!-- Демонстрация работы -->
-    <Button
-        android:id="@+id/btnDemo"
-        android:layout_width="wrap_content"
+        <!-- Заголовок экрана -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="FIXATOR"
+            android:textColor="#4A9FD4"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.2"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Подсказка позиционирования -->
+        <TextView
+            android:id="@+id/textViewHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="#1A0D2137"
+            android:backgroundTint="#330D2137"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="#C8DFF0"
+            android:textSize="14sp"
+            android:lineSpacingExtra="3dp"
+            tools:text="Расположите лицо в центре кадра"/>
+
+    </LinearLayout>
+
+    <!-- Нижняя полоса с кнопкой демо -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="32dp"
-        android:text="Демонстрация" />
+        android:layout_gravity="bottom"
+        android:background="#CC000000"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingVertical="20dp"
+        android:paddingHorizontal="48dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDemo"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Демонстрация"
+            android:textColor="#4A9FD4"
+            android:textSize="14sp"
+            app:backgroundTint="#0D2137"
+            app:strokeColor="#1E4976"
+            app:strokeWidth="1dp"
+            app:cornerRadius="24dp"/>
+
+    </LinearLayout>
 
 </FrameLayout>

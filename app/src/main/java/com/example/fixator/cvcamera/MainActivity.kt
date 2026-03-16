@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     private var viewFinderHeight = 0
 
     private companion object {
+        @Volatile private var isCaptured = false
         const val REQUEST_CODE_PERMISSIONS = 10
         const val CAPTURE_DELAY = 2000L
 
@@ -319,20 +320,28 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAutoCapture(face: Face, imageWidth: Int, imageHeight: Int) {
         if (isPerfectPosition(face, imageWidth, imageHeight)) {
-            if (System.currentTimeMillis() - lastCaptureTime > CAPTURE_DELAY) {
-                lastCaptureTime = System.currentTimeMillis()
+            if (!isCaptured && System.currentTimeMillis() - lastCaptureTime > CAPTURE_DELAY) {
+                isCaptured = true  // выставляем ДО runOnUiThread — блокирует следующие кадры мгновенно
                 runOnUiThread {
                     textViewHint.text = "Положение идеально! Делаем снимок..."
                     val bitmap = captureBitmapFromPreview()
                     if (bitmap != null) {
                         saveAndGoToGPT(bitmap)
+                    } else {
+                        // Если bitmap не удалось получить — сбрасываем флаг чтобы попробовать снова
+                        isCaptured = false
                     }
                 }
             }
         } else {
-            // Сбрасываем таймер при любом нарушении — требуем 2 сек непрерывного идеала
             lastCaptureTime = System.currentTimeMillis()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isCaptured = false
+        lastCaptureTime = System.currentTimeMillis()
     }
 
     private fun allPermissionsGranted(): Boolean {
@@ -379,6 +388,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun captureBitmapFromPreview(): Bitmap? {
         val previewView = findViewById<PreviewView>(R.id.viewFinder)
-        return previewView.bitmap
+        val raw = previewView.bitmap ?: return null
+
+        // Принудительно конвертируем в SOFTWARE-backed ARGB_8888
+        // PdfDocument.Canvas не принимает HARDWARE bitmap
+        return if (raw.config == Bitmap.Config.HARDWARE) {
+            val soft = raw.copy(Bitmap.Config.ARGB_8888, false)
+            raw.recycle()
+            soft
+        } else {
+            raw
+        }
     }
 }

@@ -1,48 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="#0F1923">
 
-    <EditText
-        android:id="@+id/etInput"
+    <!-- Верхняя шапка -->
+    <LinearLayout
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Введите текст для формализации"
-        android:inputType="textMultiLine"
-        android:minHeight="100dp"/>
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="36dp"
+        android:paddingBottom="12dp"
+        android:background="#0D2137"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <Button
-        android:id="@+id/btnSubmit"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FIXATOR"
+            android:textColor="#4A9FD4"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.2"
+            android:layout_marginBottom="2dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Формализация описаний"
+            android:textColor="#5A8AAA"
+            android:textSize="11sp"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/topDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#1E3A5F"
+        app:layout_constraintTop_toBottomOf="@id/topBar"/>
+
+    <!-- Прокручиваемое содержимое -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:scrollbarThumbVertical="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/topDivider"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Фото происшествия -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ФОТО ПРОИСШЕСТВИЯ"
+                android:textColor="#5A8AAA"
+                android:textSize="10sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="#0D2137"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#1E4976"
+                app:strokeWidth="1dp">
+
+                <ImageView
+                    android:id="@+id/ivPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="Фото происшествия"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Поле ввода -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ОПИСАНИЕ ПРОИСШЕСТВИЯ"
+                android:textColor="#5A8AAA"
+                android:textSize="10sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:boxBackgroundColor="#0D2137"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="#1E4976"
+                app:boxStrokeWidth="1dp"
+                app:boxCornerRadiusTopStart="8dp"
+                app:boxCornerRadiusTopEnd="8dp"
+                app:boxCornerRadiusBottomStart="8dp"
+                app:boxCornerRadiusBottomEnd="8dp"
+                app:hintTextColor="#5A8AAA"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="110dp"
+                    android:gravity="top"
+                    android:hint="Введите текст для формализации..."
+                    android:inputType="textMultiLine"
+                    android:textColor="#C8DFF0"
+                    android:textColorHint="#2A5070"
+                    android:textSize="14sp"
+                    android:padding="12dp"
+                    android:background="@null"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Кнопка формализации -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="20dp"
+                android:text="Формализовать текст"
+                android:textColor="#4A9FD4"
+                android:textSize="14sp"
+                app:backgroundTint="#0D2137"
+                app:strokeColor="#1E4976"
+                app:strokeWidth="1dp"
+                app:cornerRadius="24dp"/>
+
+            <!-- Блок результата -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="РЕЗУЛЬТАТ"
+                android:textColor="#5A8AAA"
+                android:textSize="10sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="8dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="#0D2137"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#1E4976"
+                app:strokeWidth="1dp">
+
+                <TextView
+                    android:id="@+id/tvResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="120dp"
+                    android:padding="14dp"
+                    android:textColor="#C8DFF0"
+                    android:textSize="14sp"
+                    android:lineSpacingExtra="3dp"
+                    android:gravity="top"
+                    tools:text="Формализованный текст появится здесь"/>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Нижняя кнопка — всегда видна -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Формализовать текст"/>
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp"
+        android:background="#0A1520"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <TextView
-        android:id="@+id/tvResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="#f0f0f0"
-        android:minHeight="150dp"
-        android:padding="8dp"
-        android:textColor="#000000"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnGenerateReport"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Сформировать отчёт PDF"
+            android:textColor="#4A9FD4"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:backgroundTint="#1A3A5C"
+            app:strokeColor="#4A9FD4"
+            app:strokeWidth="1dp"
+            app:cornerRadius="10dp"
+            app:icon="@android:drawable/ic_menu_share"
+            app:iconTint="#4A9FD4"
+            app:iconGravity="textStart"/>
 
-    <ImageView
-        android:id="@+id/ivPhoto"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:scaleType="centerCrop"
-        android:layout_marginBottom="16dp"
-        android:contentDescription="Фото происшествия" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/btnGenerateReport"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Сформировать отчет"/>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
